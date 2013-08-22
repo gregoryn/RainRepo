@@ -2,7 +2,7 @@ package com.gnedrich.rain.graphics;
 
 public class Screen {
 	
-	private int width;
+	private int width; // width
 	private int height;
 	public int[] pixels;
 	
