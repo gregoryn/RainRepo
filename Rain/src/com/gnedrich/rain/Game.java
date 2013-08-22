@@ -12,10 +12,11 @@ import javax.swing.JFrame;
 
 import com.gnedrich.rain.graphics.Screen;
 
+//Main contained in this class
 public class Game extends Canvas implements Runnable 
 {
 	/**
-	 * 
+	 *  By Gregory N
 	 */
 	private static final long serialVersionUID = 1L;
 	public static int width = 300;
@@ -30,6 +31,21 @@ public class Game extends Canvas implements Runnable
 	
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+	
+	//Main...
+	public static void main(String[] args)
+	{
+		Game game = new Game();
+		game.frame.setResizable(false);
+		game.frame.setTitle("Rain");
+		game.frame.add(game);
+		game.frame.pack();
+		game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		game.frame.setLocationRelativeTo(null);
+		game.frame.setVisible(true);
+		
+		game.start();
+	}
 	
 	public Game()
 	{
@@ -97,17 +113,4 @@ public class Game extends Canvas implements Runnable
 		
 	}
 	
-	public static void main(String[] args)
-	{
-		Game game = new Game();
-		game.frame.setResizable(false);
-		game.frame.setTitle("Rain");
-		game.frame.add(game);
-		game.frame.pack();
-		game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		game.frame.setLocationRelativeTo(null);
-		game.frame.setVisible(true);
-		
-		game.start();
-	}
 }
