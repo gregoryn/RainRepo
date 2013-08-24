@@ -34,12 +34,15 @@ public class Screen {
 	{
 		for (int y = 0; y < height; y++)
 		{
-			if (y < 0 || y >=  height)break;
+			int yy = y; //new variable
+			if (yy < 0 || yy >=  height)break;
+			
 			for (int x = 0; x < width; x++)
 			{
-				if (x < 0 || x >= width) break;
-				int tileIndex = (x >> 4) + (y >>4) * 64;
-				pixels[x  + y*width] = tiles[tileIndex];
+				int xx = x;
+				if (xx < 0 || xx >= width) break;
+				int tileIndex = ((x >> 4) & 63) + ((y >> 4) & 63) * 64;
+				pixels[xx  + yy *width] = tiles[tileIndex];
 			}
 		}
 	}
