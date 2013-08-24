@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 
 import com.gnedrich.rain.graphics.Screen;
 
-//Main contained in this class
 public class Game extends Canvas implements Runnable 
 {
 	/**
@@ -22,6 +21,7 @@ public class Game extends Canvas implements Runnable
 	public static int width = 300;
 	public static int height = 168;
 	public static int scale = 3;
+	public static String title = "Rain";
 	
 	private Thread thread;
 	private JFrame frame;
@@ -32,12 +32,12 @@ public class Game extends Canvas implements Runnable
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 	
-	//Main...
+	
 	public static void main(String[] args)
 	{
 		Game game = new Game();
 		game.frame.setResizable(false);
-		game.frame.setTitle("Rain");
+		game.frame.setTitle(Game.title);
 		game.frame.add(game);
 		game.frame.pack();
 		game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,10 +77,33 @@ public class Game extends Canvas implements Runnable
 	
 	public void run()
 	{
+		long lastTime = System.nanoTime();
+		long timer = System.currentTimeMillis();
+		final double ns = 1000000000.0 / 60.0;
+		double delta = 0;
+		int frames = 0;
+		int updates = 0;
 		while (running)
 		{
-			update();
+			long now = System.nanoTime();
+			delta += (now -lastTime) / ns;
+			lastTime = now;
+			while (delta >= 1)
+			{
+				update();
+				updates++;
+				delta--;
+			}
 			render();
+			frames++;
+			
+			if (System.currentTimeMillis() - timer > 1000) {
+				timer += 1000;
+				System.out.println(updates + "ups, " +frames+ " fps");
+				frame.setTitle(title + "  |  " + updates + " ups, " + frames + " fps" );
+				updates = 0;
+				frames = 0;
+			}
 		}
 		
 	}
@@ -98,7 +121,7 @@ public class Game extends Canvas implements Runnable
 			createBufferStrategy(3);
 			return;
 		}
-		//screen.clear();
+		screen.clear();
 		screen.render();
 		
 		for (int i=0; i <pixels.length; i++)
